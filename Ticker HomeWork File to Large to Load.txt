@@ -1,0 +1,55 @@
+Sub tickerGroup()
+    
+Dim d As Object
+Dim c As Variant
+Dim i As Long
+Dim lr As Long
+Dim jh As String
+Dim kh As String
+Dim tickerTotal As Long
+Dim tickerName As String
+Dim row As Long
+Dim tickerRow As Long
+
+Set d = CreateObject("Scripting.Dictionary")
+lr = Cells(Rows.Count, 1).End(xlUp).row
+c = Range("A2:A" & lr)
+jh = "Ticker Name"
+kh = "Ticker Value"
+
+
+Range("J1").Value = jh
+Range("K1").Value = kh
+
+
+' Get unique ticker and place in column
+For i = 1 To UBound(c, 1)
+  d(c(i, 1)) = 1
+Next i
+Range("J2").Resize(d.Count) = Application.Transpose(d.keys)
+
+'Sort Columns
+Set ticker = Range("J2")
+Set tickerSort = Range("J2")
+
+ticker.Sort Key1:=tickerSort, order1:=xlAscending, Header:=xlYes
+    
+' Get Total Values
+    
+    
+    With Sheet1
+        tickerRow = 2
+        Do While Trim(Range("J" & tickerRow).Value) <> ""
+            tickerName = Trim(Range("J" & tickerRow).Value)
+            tickerTotal = 0
+            For row = 2 To .UsedRange.Rows.Count
+                If Trim(Range("A" & row).Value) = tickerName Then
+                    tickerTotal = tickerTotal + Val(Range("G" & row).Value)
+                End If
+            Next
+            Range("K" & tickerRow).Value = tickerTotal
+        tickerRow = tickerRow + 1
+        Loop
+    End With
+
+End Sub
