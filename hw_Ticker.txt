@@ -1,0 +1,25 @@
+Sub hw_StockTicker()
+'Variables
+Dim tickerTotal As Double
+Dim I1 As String, J1 As String
+
+'set variables, cells, and last row
+lr = Cells(Rows.Count, "A").End(xlUp).row
+I1 = "Ticker"
+J1 = "Total Stock Volume"
+Range("I1").Value = I1
+Range("J1").Value = J1
+        
+'Group ticker and sum ticker volume
+For i = 2 To lr
+    If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+        tickerTotal = tickerTotal + Cells(i, 7).Value
+        Range("I" & 2 + j).Value = Cells(i, 1).Value
+        Range("J" & 2 + j).Value = tickerTotal
+        tickerTotal = 0
+        j = j + 1
+    Else
+        tickerTotal = tickerTotal + Cells(i, 7).Value
+    End If
+Next i
+End Sub
